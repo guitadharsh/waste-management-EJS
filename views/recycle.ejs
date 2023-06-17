@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waste Management</title>
+    <!-- favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png" />
+    <link rel="manifest" href="site.webmanifest" />
+
+    <!-- styles -->
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <!-- navigation bar -->
+    <div class="nav-bar">
+      <div class="logo">
+        <div class="img">
+          <img src="/images/apple-touch-icon.png" alt="" />
+        </div>
+        <p>Waste Management</p>
+      </div>
+      <div class="nav-element">
+        <ul id="myDIV">
+          <li><a href="/recycle" class="active1" >Home</a></li>
+          <li><a href="/recycleTable">My Recycle</a></li>
+          <li>
+            <form action="/logout" method="GET">
+              <button>Logout</button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- mainbody  -->
+    <div class="body">
+      <div class="modern-form">
+        <h1>Lets Recycle</h1>
+
+        <form action="recycleForm" method="POST" id="recycleForm">
+          <fieldset class="float-label-field">
+            <label for="name">Name</label>
+            <input id="name" name="name" />
+          </fieldset>
+
+          <fieldset class="float-label-field">
+            <label for="address">Address</label>
+            <input id="address" name="address" />
+          </fieldset>
+
+          <fieldset class="float-label-field">
+            <label for="place">Place</label>
+            <input id="place" name="place" />
+          </fieldset>
+
+          <div class="select">
+            <select id="select-box" name="category">
+              <option>Select Category of Plastic</option>
+              <option value="1">Single-use plastics</option>
+              <option value="2">Microplastics</option>
+              <option value="3">Plastic bottles and containers</option>
+              <option value="4">Fishing gear</option>
+              <option value="5">Electronic waste</option>
+              <option value="6">Industrial plastics</option>
+              <option value="7">Food Waste</option>
+            </select>
+          </div>
+
+          <fieldset class="float-label-field">
+            <label for="quantity">Quantity</label>
+            <input id="quantity" type="number" min="0"  name="quantity"/>
+          </fieldset>
+
+          <input type="hidden" id="amount1" name="amount"></input>
+          <p id="amount"></p>
+          <p id="error-msg1"></p>
+
+          <button style="margin-top: 3rem" id="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.6.3.min.js"
+      integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+      crossorigin="anonymous"
+    ></script>
+    <script src="script.js"></script>
+    <script>
+      // plastic category rate fixing
+      const selectBox = document.querySelector("#select-box");
+      const amount = document.getElementById("amount");
+      const amount1 = document.getElementById("amount1")
+      const quantity = document.querySelector("#quantity");
+      const name = document.querySelector("#name");
+      const address = document.querySelector("#address");
+      const place = document.querySelector("#place");
+      const submit = document.querySelector("#submit");
+      const errorMsg1 = document.querySelector("#error-msg1");
+      let price;
+
+      selectBox.addEventListener("change", function () {
+        const value = parseInt(selectBox.value);
+        switch (value) {
+          case 1:
+            price = 10;
+            break;
+          case 2:
+            price = 20;
+            break;
+          case 3:
+            price = 30;
+            break;
+          case 4:
+            price = 40;
+            break;
+          case 5:
+            price = 50;
+            break;
+          case 6:
+            price = 60;
+            break;
+          case 7:
+            price = 40;
+            break;
+          default:
+            price = 0;
+        }
+        if (quantity.value === "") {
+          amount.innerHTML = `Amount: &#x20B9;${price} `;
+        } else {
+          amount.innerHTML = `Amount: &#x20B9;${price * quantity.value} `;
+        }
+      });
+
+      quantity.addEventListener("input", function () {
+        const value = parseInt(quantity.value);
+        const updatedPrice = value * price;
+        amount.innerHTML = `Amount: &#x20B9;${updatedPrice} `;
+        amount1.value = updatedPrice;
+      });
+
+      submit.addEventListener("click", () => {
+        // e.preventDefault()
+        if (
+          name.value == "" &&
+          place.value == "" &&
+          quantity.value =="" &&
+          address.value == ""
+        ) {
+          errorMsg1.innerHTML = "Please fill out all required fields.";
+        } else {
+          // Validation passed, submit the form to the backend
+          document.querySelector("#recycleForm").submit();
+          submit.disabled = true;
+          // Disable the submit button to prevent multiple submissions
+        }
+      });
+    </script>
+  </body>
+</html>
